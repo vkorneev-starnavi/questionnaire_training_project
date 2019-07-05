@@ -1,5 +1,7 @@
-from rest_framework.serializers import HyperlinkedModelSerializer
-from questionnaire.models import Questionnaire, QuestionnaireField
+from rest_framework.serializers import HyperlinkedModelSerializer, \
+    ModelSerializer, CharField
+from questionnaire.models import Questionnaire, QuestionnaireField, \
+    FieldValue
 
 
 class QuestionnaireFieldSerializer(HyperlinkedModelSerializer):
@@ -17,3 +19,17 @@ class QuestionnaireSerializer(HyperlinkedModelSerializer):
         model = Questionnaire
         fields = ('url', 'id', 'author', 'description', 'fields', 'created_at')
         read_only_fields = ('created_at',)
+
+
+class FieldValueSerializer(ModelSerializer):
+    value = CharField(max_length=255, required=False)
+
+    class Meta:
+        model = FieldValue
+        fields = ('id', 'field', 'value')
+
+    def validate(self, data):
+        field = data['field']
+        if 'value' not in data:
+            data['value'] = field.default_val
+        return data
