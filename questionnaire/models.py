@@ -18,7 +18,8 @@ class QuestionnaireField(models.Model):
         ('CHK', 'checkbox'),
         ('NUM', 'number_choice')
     )
-    questionnaire = related.ForeignKey(Questionnaire, on_delete=models.CASCADE)
+    questionnaire = related.ForeignKey(Questionnaire, on_delete=models.CASCADE,
+                                       related_name='fields')
     position = fields.IntegerField()
     field_type = fields.CharField(max_length=3, choices=FIELD_TYPES)
     text_before = fields.CharField(max_length=255)
