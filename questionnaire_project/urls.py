@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 from users.urls import urlpatterns as users_urlpatterns
+from questionnaire.urls import urlpatterns as questionnaire_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(users_urlpatterns))
+    path('api/', include(users_urlpatterns)),
+    path('api/', include(questionnaire_urlpatterns))
 ]
