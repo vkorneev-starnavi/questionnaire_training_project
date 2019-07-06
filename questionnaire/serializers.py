@@ -1,7 +1,7 @@
 from rest_framework.serializers import HyperlinkedModelSerializer, \
     ModelSerializer, CharField
 from questionnaire.models import Questionnaire, QuestionnaireField, \
-    FieldValue
+    FieldValue, QuestionnaireAnswer
 
 
 class QuestionnaireFieldSerializer(HyperlinkedModelSerializer):
@@ -33,3 +33,18 @@ class FieldValueSerializer(ModelSerializer):
         if 'value' not in data:
             data['value'] = field.default_val
         return data
+
+
+class QuestionnaireAnswerSerializer(HyperlinkedModelSerializer):
+    field_values = FieldValueSerializer(many=True)
+
+    class Meta:
+        model = QuestionnaireAnswer
+        fields = ('questionnaire', 'respondent', 'field_values')
+
+    def create(self, validated_data):
+        values = validated_data.pop('field_values')
+        answer = QuestionnaireAnswer.objects.create(**validated_data)
+        for val in values:
+            FieldValue.objects.create(answer=answer, **val)
+        return answer

@@ -42,7 +42,8 @@ class QuestionnaireAnswer(models.Model):
 
 
 class FieldValue(models.Model):
-    answer = related.ForeignKey(QuestionnaireAnswer, on_delete=models.CASCADE)
+    answer = related.ForeignKey(QuestionnaireAnswer, on_delete=models.CASCADE,
+                                related_name='field_values')
     field = related.ForeignKey(QuestionnaireField, on_delete=models.CASCADE)
     value = fields.CharField(max_length=255)
 
