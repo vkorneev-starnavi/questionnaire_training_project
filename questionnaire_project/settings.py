@@ -132,3 +132,8 @@ STATIC_URL = '/static/'
 
 # register custom User model
 AUTH_USER_MODEL = 'users.User'
+
+# Django Rest Framework settings
+REST_FRAMEWORK = {
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
