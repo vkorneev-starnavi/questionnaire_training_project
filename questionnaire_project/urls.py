@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from users.urls import urlpatterns as users_urlpatterns
 from questionnaire.urls import urlpatterns as questionnaire_urlpatterns
@@ -22,5 +23,7 @@ from questionnaire.urls import urlpatterns as questionnaire_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(users_urlpatterns)),
-    path('api/', include(questionnaire_urlpatterns))
+    path('api/', include(questionnaire_urlpatterns)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token-obtain'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token-refresh')
 ]
