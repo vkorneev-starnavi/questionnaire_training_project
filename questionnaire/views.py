@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, \
-    CreateAPIView, ListCreateAPIView
+    CreateAPIView, ListCreateAPIView, RetrieveDestroyAPIView
 from rest_framework import permissions
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
@@ -42,5 +42,10 @@ class QuestionnaireFieldDetail(RetrieveUpdateDestroyAPIView):
 
 
 class QuestionnaireAnswerListCreate(ListCreateAPIView):
+    queryset = QuestionnaireAnswer.objects.all()
+    serializer_class = QuestionnaireAnswerSerializer
+
+
+class QuestionnaireAnswerDetail(RetrieveDestroyAPIView):
     queryset = QuestionnaireAnswer.objects.all()
     serializer_class = QuestionnaireAnswerSerializer
