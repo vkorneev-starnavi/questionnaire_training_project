@@ -23,10 +23,10 @@ class QuestionnaireField(models.Model):
     position = fields.IntegerField()
     field_type = fields.CharField(max_length=3, choices=FIELD_TYPES)
     text_before = fields.CharField(max_length=255)
-    text_after = fields.CharField(max_length=255)
+    text_after = fields.CharField(max_length=255, blank=True)
     default_val = fields.CharField(max_length=255, blank=True)
-    min_val = fields.FloatField(null=True)
-    max_val = fields.FloatField(null=True)
+    min_val = fields.IntegerField(null=True)
+    max_val = fields.IntegerField(null=True)
 
     class Meta:
         unique_together = ('questionnaire', 'position')
