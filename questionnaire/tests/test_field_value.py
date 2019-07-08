@@ -67,3 +67,28 @@ class FieldValueTests(TestCase):
         values_to_check = [('true', 201), ('false', 201), ('bad', 400)]
         for val, res in values_to_check:
             check_val(val, res)
+
+    def test_can_choose_number_in_range(self):
+        self.client.force_login(self.users[0])
+        respondent_url = reverse('user-detail', kwargs={'pk': self.users[0].id})
+        questionnaire_url = reverse('questionnaire-detail',
+                                    kwargs={'pk': self.questionnaires[0].id})
+
+        # make new text field
+        field = QuestionnaireField.objects.create(
+            questionnaire=self.questionnaires[0], position=1,
+            field_type='NUM', text_before='just field', min_val=1, max_val=5)
+
+        def check_val(val, res):
+            field_value = {'field': field.id, 'value': val}
+            answer_data = {'questionnaire': questionnaire_url,
+                           'respondent': respondent_url,
+                           'field_values': [field_value]}
+            r = self.client.post(reverse('questionnaireanswer-list'), answer_data)
+            self.assertEqual(r.status_code, res, msg='Value is {}'.format(val))
+            if r.status_code == 201:
+                QuestionnaireAnswer.objects.get(id=r.json()['id']).delete()
+
+        values_to_check = [('2', 201), (5, 201), ('100', 400)]
+        for val, res in values_to_check:
+            check_val(val, res)

@@ -36,6 +36,14 @@ class FieldValueSerializer(ModelSerializer):
             if data['value'] not in ('true', 'false'):
                 raise ValidationError('Checkbox field value must be either'
                                       '"true" or "false".')
+        elif field.field_type == 'NUM':
+            try:
+                int_val = int(data['value'])
+            except ValueError:
+                raise ValidationError('Number choice value must be integer')
+            if int_val < field.min_val or int_val > field.max_val:
+                raise ValidationError('Number must be in range [{}, {}]'
+                                      .format(field.min_val, field.max_val))
         return data
 
 
