@@ -1,5 +1,5 @@
 from rest_framework.serializers import HyperlinkedModelSerializer, \
-    ModelSerializer, CharField
+    ModelSerializer, CharField, ValidationError
 from questionnaire.models import Questionnaire, QuestionnaireField, \
     FieldValue, QuestionnaireAnswer
 
@@ -32,6 +32,10 @@ class FieldValueSerializer(ModelSerializer):
         field = data['field']
         if 'value' not in data:
             data['value'] = field.default_val
+        elif field.field_type == 'CHK':
+            if data['value'] not in ('true', 'false'):
+                raise ValidationError('Checkbox field value must be either'
+                                      '"true" or "false".')
         return data
 
 
