@@ -40,7 +40,7 @@ class QuestionnaireAnswerSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = QuestionnaireAnswer
-        fields = ('questionnaire', 'respondent', 'field_values')
+        fields = ('url', 'id', 'questionnaire', 'respondent', 'field_values')
 
     def create(self, validated_data):
         values = validated_data.pop('field_values')
